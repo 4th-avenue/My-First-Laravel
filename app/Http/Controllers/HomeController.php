@@ -32,4 +32,20 @@ class HomeController extends Controller
         $user = \Auth::user();
         return view('create', compact('user'));
     }
+
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        // dd($data);
+        // POSTされたデータをDB（memosテーブル）に挿入
+        // MEMOモデルにDBへ保存する命令を出す
+        $memo_id = Memo::insertGetId([
+            'content' => $data['content'],
+            'user_id' => $data['user_id'],
+            'status' => 1
+        ]);
+        
+        // リダイレクト処理
+        return redirect()->route('home');
+    }
 }
