@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Memo;
 
 class HomeController extends Controller
 {
@@ -36,14 +37,14 @@ class HomeController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        dd($data);
+        // dd($data);
         // POSTされたデータをDB（memosテーブル）に挿入
         // MEMOモデルにDBへ保存する命令を出す
-        // $memo_id = Memo::insertGetId([
-        //     'content' => $data['content'],
-        //     'user_id' => $data['user_id'],
-        //     'status' => 1
-        // ]);
+        $memo_id = Memo::insertGetId([
+            'content' => $data['content'],
+            'user_id' => $data['user_id'],
+            'status' => 1
+        ]);
         
         // リダイレクト処理
         return redirect()->route('home');
