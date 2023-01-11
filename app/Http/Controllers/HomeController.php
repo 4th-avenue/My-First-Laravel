@@ -64,4 +64,11 @@ class HomeController extends Controller
         // 습득한 메모를 View로 전달
         return view('edit', compact('memo', 'user', 'memos'));
     }
+
+    public function update(Request $request, $id)
+    {
+        $inputs = $request->all();
+        Memo::where('id', $id)->update(['content' => $inputs['content']]);
+        return redirect()->route('home');
+    }
 }
