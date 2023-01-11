@@ -24,7 +24,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        // 로그인 중인 유저의 정보를 View로 전달
+        $user = \Auth::user();
+        // 메모 일람을 습득
+        $memos = Memo::where('user_id', $user['id'])->where('status', 1)->orderBy('updated_at', 'DESC')->get();
+        return view('home', compact('user', 'memos'));
     }
 
     public function create()
@@ -48,5 +52,16 @@ class HomeController extends Controller
         
         // リダイレクト処理
         return redirect()->route('home');
+    }
+
+    public function edit($id)
+    {
+        // 해당하는 ID의 메모를 DB에서 습득
+        $user = \Auth::user();
+        $memo = Memo::where('status', 1)->where('id', $id)->where('user_id', $user['id'])->first();
+        // dd($memo);
+        $memos = Memo::where('user_id', $user['id'])->where('status', 1)->orderBy('updated_at', 'DESC')->get();
+        // 습득한 메모를 View로 전달
+        return view('edit', compact('memo', 'user', 'memos'));
     }
 }
